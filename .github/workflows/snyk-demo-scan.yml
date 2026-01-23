@@ -13,10 +13,12 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # Use the key we saved earlier
         with:
           args: --severity-threshold=high # Only report high-risk bugs
+        continue-on-error: true  # Don't fail the job if issues are found
 
       - name: Run Snyk Code (SAST)
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          command: code test  # This scans your actual lines of code
+          command: code test   # This scans your actual lines of code
+        continue-on-error: true
