@@ -1,0 +1,25 @@
+name: Snyk Security Scan  # Name of the recipe
+on: push               # Trigger: Run this every time I push code
+
+jobs:
+  security:
+    runs-on: ubuntu-latest  # Use a fresh Linux machine in the cloud
+    steps:
+      - uses: actions/checkout@v4  # Step 1: Copy my code onto the machine
+
+      - name: Run Snyk Open Source (SCA)
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # Use the key we saved earlier
+        with:
+          args: --severity-threshold=high # Only report high-risk bugs
+        continue-on-error: true  # Don't fail the job if issues are found
+
+      - name: Run Snyk Code (SAST)
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: code test   # This scans your actual lines of code
+          args: --severity-threshold=high
+        continue-on-error: true
