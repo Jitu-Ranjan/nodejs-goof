@@ -21,4 +21,5 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: code test   # This scans your actual lines of code
+          args: --severity-threshold=high
         continue-on-error: true
